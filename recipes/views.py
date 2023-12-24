@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from .models import Unit, Unittype,Recipe, Cuisine
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
@@ -5,8 +7,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .models import Recipe, Cuisine
 from .forms import RecipeForm
+from rest_framework import viewsets
+from rest_framework import mixins
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.forms.models import model_to_dict
 # Create your views here.
 
 
@@ -94,3 +100,32 @@ def deleteRecipe(request,pk):
             recipe.delete()
             return redirect('home')
       return render(request,'recipes/delete.html',{'obj':recipe})
+
+
+@api_view(['GET'])
+def GetUnitList(request):
+    type = request.GET.get('type')
+    return JsonResponse(list(Unit.objects.filter(type=request.GET.get('type')).values("id", "name")), safe=False)
+@api_view(['GET'])
+def GetUnitTypeList(request):
+    return JsonResponse(list(Unittype.objects.all().values("id", "name")), safe=False)
+@api_view(['GET'])
+def GetCusineList(request):
+      return JsonResponse(list(Cuisine.objects.all().values("id", "name")), safe=False)
+
+
+@api_view(['POST'])
+def CreateBlog(request):
+    _blog = blog.objects.create(category_id=request.data.get('category'), title=request.data.get('title'),slug=request.data.get('slug'),excerpt=request.data.get('excerpt'),
+    content=request.data.get('content'),contentTwo=request.data.get('contentTwo'),image=request.data.get('image'),ingredients=request.data.get('ingredients'),postlabel=request.data.get('postlabel'))
+    return JsonResponse(_blog.id, safe=False)
+
+@api_view(['POST']) 
+def File(request):
+    file = request.FILES['file']
+    file_name = default_storage.save('image\\' + file.name, file)
+    return JsonResponse(file_name, safe=False)
+
+@api_view(['GET'])
+def GetUnitType(request):
+    return JsonResponse(model_to_dict(Unittype.objects.get(id=request.GET.get('id'))), safe=False)
