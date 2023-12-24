@@ -28,11 +28,11 @@
         <div>
             {% for recipe in recipes %}
             <div>
-                {% if request.user == recipe.owner %}
+                {% if request.user == recipe.user %}
                 <a href="{% url 'update-recipe' recipe.id %}">Edit</a>
                 <a href="{% url 'delete-recipe' recipe.id %}">Delete</a>
                 {% endif %}
-                <span>@{{recipe.owner.username}}</span>
+                <span>@{{recipe.user.username}}</span>
                 <h5>{{recipe.id}} -- <a href="{% url 'recipe' recipe.id %}">{{recipe.title}}</a></h5>
             <small>{{recipe.cuisine.name}}</small>
             <hr>

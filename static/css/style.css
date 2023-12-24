@@ -1,0 +1,78 @@
+/* Apply basic styles to the navigation bar and its elements */
+
+:root{
+    --main-cl: #FDFFE7;
+    --gold-cl: #FFD700;
+    --orange-cl:#FFA500 ;
+    --tomato-cl: #FF6347;
+    --turquoise-cl:#00CED1;
+    --violet-ce:#8A2BE2;
+    --green-cl: #4CAF50;
+    --darkcyan-cl: #008CBA;
+    --lightbeige-cl:#F3E5AB;
+
+    --orangehover-cl:#FFC04D;
+    --tomatohover-cl:#FF7F6E;
+
+    --greenhover-cl:#43A047 ;
+    --cyanhover-cl:#007A9B;
+
+
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--main-cl);
+}
+
+.register{
+    background-color: var(--tomato-cl);
+    border-color: var(--tomato-cl);
+}
+
+.register:hover{
+    background-color: var(--tomatohover-cl);
+    border-color: var(--tomatohover-cl);
+}
+
+.login{
+    background-color: var(--darkcyan-cl);
+    border-color: var(--darkcyan-cl);
+}
+
+.login:hover{
+    background-color: var(--cyanhover-cl);
+    border-color: var(--cyanhover-cl);
+}
+
+.navbar {
+    /* border-top: 1px solid rgba(0, 0, 0, 0.2) !important; */
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.nav-item {
+    margin-right: 2rem;
+}
+
+.nav-link {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--tomato-cl);
+}
+
+.nav-item:hover .nav-link {
+    color: var(--tomato-cl);
+}
+
+/* Style for home.html */
+
+
+/* Style for Recipe.html */
+.ingredient_list {
+    margin-top: 0rem;
+}

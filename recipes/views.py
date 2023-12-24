@@ -73,14 +73,14 @@ def createRecipe(request):
                   return redirect('home')
                 
       context = {'form' : form}
-      return render(request,'recipes/recipe_form.html', context)
+      return render(request,'recipes/recipe_formAlt.html', context)
 
 @login_required(login_url='login')
 def updateRecipe(request,pk):
       recipe=Recipe.objects.get(id=pk)
       form=RecipeForm(instance=recipe)
       
-      if request.user != recipe.owner:
+      if request.user != recipe.user:
             return HttpResponse('You are not allowed here!!')
       if request.method == 'POST':
         form = RecipeForm(request.POST, instance=recipe)
@@ -94,7 +94,7 @@ def updateRecipe(request,pk):
 def deleteRecipe(request,pk):
       recipe=Recipe.objects.get(id=pk)
        
-      if request.user != recipe.owner:
+      if request.user != recipe.user:
             return HttpResponse('You are not allowed here!!')
       if request.method=='POST':
             recipe.delete()
