@@ -25,7 +25,6 @@ from django.contrib.auth.decorators import login_required
 logging.basicConfig(level=logging.DEBUG)
 
 def add_comment(request, recipe_id):
-    print("DASDASDAS")
     user_id = request.user.id
     user_instance = User.objects.get(pk=user_id)
     recipe_instance = Recipe.objects.get(pk=recipe_id)

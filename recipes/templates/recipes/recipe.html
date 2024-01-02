@@ -1,40 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-   
-    <!---- <link rel="stylesheet" href=" static 'css/styles.css' ">-->
-</head>
 {% extends 'main.html' %}
 
 {% block content %}
-<h1> {{recipe.name}}</h1>
-<h1> {{recipe.instructions}}</h1>
-<h1> {{recipe.recipe_id}}</h1>
+    <h1>{{ recipe.title }}</h1>
+    <p>Category: {{ recipe.category }}</p>
+    <p>Description: {{ recipe.description }}</p>
+    <!-- Other details such as images, videos, preparation time, cooking time, etc. -->
+    {% if recipe.images %}
+        <img src="{{ recipe.images.url }}" alt="Recipe Image">
+    {% endif %}
 
-<!-- <input type="text"> -->
-{% if is_bookmarked %}
-    <form method="POST" name="removeBookmarkForm">
+    {% if recipe.videos %}
+        <p>Video URL: <a href="{{ recipe.videos }}">{{ recipe.videos }}</a></p>
+    {% endif %}
+
+    <p>Preparation Time: {{ recipe.preparationTime }} minutes</p>
+    <p>Cooking Time: {{ recipe.cookingTime }} minutes</p>
+
+    <h2>Ingredients:</h2>
+    <ul>
+        {% for ingredient in recipe.ingredients.all %}
+            <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Instructions:</h2>
+    <ol>
+        {% for instruction in recipe.instructions.all %}
+            <li>{{ instruction.instruction_number }}. {{ instruction.description }}</li>
+        {% endfor %}
+    </ol>
+
+    {% if is_bookmarked %}
+        <form method="POST" name="removeBookmarkForm">
+            {% csrf_token %}
+            <input type="submit" value="Remove Bookmark">
+        </form>
+    {% else %}
+        <form method="POST" name="addBookmarkForm">
+            {% csrf_token %}
+            <input type="submit" value="Add Bookmark">
+        </form>
+    {% endif %}
+
+    <form method="post" action="" name="commentForm">
         {% csrf_token %}
-        <input type="submit" value="Remove Bookmark">
+        <div class="mb-3">
+            <h4 class="border-bottom pb-2">Comments</h4>
+            <textarea class="form-control" name="{{ comment_form.comment_text.name }}"></textarea>
+            <div class="invalid-feedback">{{ comment_form.comment_text.errors }}</div>
+        </div>
+        <button type="submit" class="float-end btn btn-warning d-block">Add Comment</button>
     </form>
-{% else %}
-    <form method="POST" name="addBookmarkForm">
-        {% csrf_token %}
-        <input type="submit" value="Add Bookmark">
-    </form>
-{% endif %}
-
-<form method="post" action="" name="commentForm">
-    {% csrf_token %}
-    <div class="mb-3">
-        <h4 class="border-bottom pb-2">Comments</h4>
-        <textarea class="form-control" name="{{ comment_form.comment_text.name }}"></textarea>
-        <div class="invalid-feedback">{{ comment_form.comment_text.errors }}</div>
-    </div>
-    <button type="submit" class="float-end btn btn-warning d-block">Add Comment</button>
-</form>
-
 {% endblock content %}
-
-</body>
-</html>
