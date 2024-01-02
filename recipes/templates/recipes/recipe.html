@@ -1,6 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <!---- <link rel="stylesheet" href=" static 'css/styles.css' ">-->
+</head>
 {% extends 'main.html' %}
 
 {% block content %}
 <h1> {{recipe.name}}</h1>
 <h1> {{recipe.instructions}}</h1>
+<h1> {{recipe.recipe_id}}</h1>
+
+<!-- <input type="text"> -->
+{% if is_bookmarked %}
+    <form method="POST" name="removeBookmarkForm">
+        {% csrf_token %}
+        <input type="submit" value="Remove Bookmark">
+    </form>
+{% else %}
+    <form method="POST" name="addBookmarkForm">
+        {% csrf_token %}
+        <input type="submit" value="Add Bookmark">
+    </form>
+{% endif %}
+
+<form method="post" action="" name="commentForm">
+    {% csrf_token %}
+    <div class="mb-3">
+        <h4 class="border-bottom pb-2">Comments</h4>
+        <textarea class="form-control" name="{{ comment_form.comment_text.name }}"></textarea>
+        <div class="invalid-feedback">{{ comment_form.comment_text.errors }}</div>
+    </div>
+    <button type="submit" class="float-end btn btn-warning d-block">Add Comment</button>
+</form>
+
 {% endblock content %}
+
+</body>
+</html>

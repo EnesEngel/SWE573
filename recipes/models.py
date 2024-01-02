@@ -17,55 +17,59 @@ class Unittype(models.Model):
     def __str__(self):
         return self.name 
 
-class Cuisine(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=200)
     def __str__(self):
         return self.name
-    
+
+
 class Recipe(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
-    cuisine =  models.ManyToManyField(Cuisine,blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(null=True)
-    ingredients = models.JSONField(default=dict) 
-    instructions = models.JSONField(default=dict)
     images = models.ImageField(null=True, blank=True, upload_to='images/')
     videos = models.URLField(null=True, blank=True)
-    nutritionFacts = models.JSONField(null=True, blank=True) 
+    nutritionFacts = models.JSONField(null=True, blank=True)
     preparationTime = models.PositiveIntegerField(null=True, blank=True)
-    cookingTime = models.PositiveIntegerField(null=True, blank=True)  
+    cookingTime = models.PositiveIntegerField(null=True, blank=True)
+    averageRating = models.FloatField(default=0)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    averageRating = models.FloatField(default=0)
+
     class Meta:
-        ordering = ['-updated','-created']
+        ordering = ['-updated', '-created']
 
     def __str__(self):
         return self.title
-    
-    def calculateAverageRating(self):
+
+    def calculate_average_rating(self):
         ratings = UserRating.objects.filter(recipe=self)
-        total = 0
-
-        if not ratings:
-            self.averageRating = 0
-        else:
-            for rating in ratings:
-                total += rating.value
-                avg = total / ratings.count()
-                self.averageRating = avg
-            else:
-                self.averageRating = 0
-
+        total = sum(rating.value for rating in ratings) if ratings else 0
+        self.averageRating = total / ratings.count() if ratings else 0
         self.save()
+
+class Ingredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
+    name = models.CharField(max_length=255)
+    quantity = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Instruction(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='instructions')
+    instruction_number = models.PositiveIntegerField()
+    description = models.TextField()
+
+    def __str__(self):
+        return f"Instruction {self.instruction_number}: {self.description}"
 
 
 class UserBookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-
-
 
 class UserComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

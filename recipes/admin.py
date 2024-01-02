@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Recipe, Cuisine, Message
+from .models import Recipe, Category, Message
 # Register your models here.
 
 admin.site.register(Recipe)
-admin.site.register(Cuisine)
+admin.site.register(Category)
 admin.site.register(Message)

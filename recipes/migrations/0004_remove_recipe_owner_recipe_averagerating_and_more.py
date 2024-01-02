@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RemoveField(
             model_name='recipe',
-            name='cuisine',
+            name='category',
         ),
         migrations.AlterField(
             model_name='recipe',
@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='recipe',
-            name='cuisine',
-            field=models.ManyToManyField(blank=True, to='recipes.cuisine'),
+            name='category',
+            field=models.ManyToManyField(blank=True, to='recipes.category'),
         ),
     ]

@@ -1,22 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <!-- <link rel="stylesheet" href=" static 'css/styles.css' "> -->
+</head>
 {% extends 'main.html' %}
 
 {% block content %}
-<style>
-    .home-container{
-        display: grid;
-        grid-template-columns: 1fr 3fr;
-    }
-</style>
+
 <div class="home-container">
     <div>
-        <h3>Browse Cuisines</h3>
+        <h3>Browse Categorys</h3>
         <hr>
         <div>
             <a href="{% url 'home' %}">All</a>
         </div>
-        {% for cuisine in cuisines %}
+        {% for category in categorys %}
         <div>
-            <a href="{% url 'home' %}?q={{cuisine.name}}">{{cuisine.name}}</a>
+            <a href="{% url 'home' %}?q={{category.name}}">{{category.name}}</a>
         </div>
         {% endfor %}
 
@@ -34,7 +35,7 @@
                 {% endif %}
                 <span>@{{recipe.user.username}}</span>
                 <h5>{{recipe.id}} -- <a href="{% url 'recipe' recipe.id %}">{{recipe.title}}</a></h5>
-            <small>{{recipe.cuisine.name}}</small>
+            <small>{{recipe.category.name}}</small>
             <hr>
             </div>
  
@@ -45,3 +46,5 @@
 </div>
 
 {% endblock content %}
+</body>
+</html>
